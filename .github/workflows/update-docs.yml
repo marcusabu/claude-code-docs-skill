@@ -71,11 +71,35 @@ jobs:
 
         echo "message=$COMMIT_MSG" >> $GITHUB_OUTPUT
 
+    - name: Bump minor version
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      id: bump-version
+      run: |
+        PLUGIN_FILE=".claude-plugin/plugin.json"
+        CURRENT_VERSION=$(jq -r '.version' "$PLUGIN_FILE")
+
+        # Parse version components
+        MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+        MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
+        PATCH=$(echo "$CURRENT_VERSION" | cut -d. -f3)
+
+        # Increment minor version, reset patch to 0
+        NEW_MINOR=$((MINOR + 1))
+        NEW_VERSION="$MAJOR.$NEW_MINOR.0"
+
+        # Update plugin.json
+        jq --arg v "$NEW_VERSION" '.version = $v' "$PLUGIN_FILE" > tmp.json && mv tmp.json "$PLUGIN_FILE"
+
+        echo "old_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        echo "Bumped version: $CURRENT_VERSION → $NEW_VERSION"
+
     - name: Commit and push if changed
       if: steps.verify-changed-files.outputs.changed == 'true'
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git commit -m "${{ steps.commit-msg.outputs.message }}"
+        git add -A
+        git commit -m "${{ steps.commit-msg.outputs.message }} (v${{ steps.bump-version.outputs.new_version }})"
         git push
 
