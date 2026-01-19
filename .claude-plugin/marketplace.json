@@ -1,0 +1,11 @@
+{
+  "name": "marcusabu-claude-code-docs",
+  "version": "1.0.0",
+  "plugins": [
+    {
+      "name": "claude-code-docs",
+      "description": "Claude Code documentation and knowledge skill - comprehensive reference for features, configuration, and best practices",
+      "source": "./"
+    }
+  ]
+}
