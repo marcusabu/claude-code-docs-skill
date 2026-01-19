@@ -45,3 +45,26 @@ claude --plugin-dir .
 - Documentation files follow official Claude Code naming
 - SKILL.md contains quick reference guides for common patterns
 - The `docs/` directory is the authoritative reference source
+
+## Git Conventions
+
+Commit format: `<type>(<scope>?): <message>`
+
+**Types:**
+- `feat` - New features or capabilities
+- `docs` - Documentation changes
+- `fix` - Bug fixes
+- `test` - Test-related changes
+
+**Examples:**
+```
+feat: add GitHub Actions workflow for auto-sync
+feat(workflow): auto-bump minor version on doc changes
+docs(readme): add example prompts section
+fix: detect untracked files in workflow change check
+```
+
+**Rules:**
+- Subject line only, no body
+- Lowercase message, no period at end
+- Scope is optional, use for specific areas (workflow, readme)
