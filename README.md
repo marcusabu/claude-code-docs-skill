@@ -1,4 +1,4 @@
-# Claude Code Docs Skill
+# Claude Code Docs Plugin
 
 A Claude Code plugin with comprehensive documentation about Claude Code features and configuration.
 
@@ -6,7 +6,7 @@ A Claude Code plugin with comprehensive documentation about Claude Code features
 
 ```bash
 # Add the marketplace from GitHub
-/plugin marketplace add marcusabu/claude-code-docs-skill
+/plugin marketplace add marcusabu/claude-code-docs-plugin
 
 # Install the plugin
 /plugin install claude-code-docs@marcusabu-claude-code-docs
