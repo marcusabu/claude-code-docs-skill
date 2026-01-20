@@ -19,6 +19,8 @@ claude --plugin-dir ./plugins/claude-code-docs
 
 50+ documentation files covering skills, agents, hooks, MCP servers, settings, plugins, IDE integrations, and more.
 
+**Note:** The docs are auto-synced daily via GitHub Actions, but the SKILL.md index is not yet auto-updated. This is [a work in progress](https://github.com/marcusabu/claude-code-docs-plugin/issues/2).
+
 ## Example Prompts
 
 Once installed, try asking Claude things like:
