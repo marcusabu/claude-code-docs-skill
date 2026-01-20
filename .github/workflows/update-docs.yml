@@ -31,13 +31,14 @@ jobs:
     - name: Check for changes
       id: verify-changed-files
       run: |
-        # Check for any changes (tracked or untracked) in the docs directory
-        if [ -n "$(git status --porcelain plugins/claude-code-docs/skills/claude-code/docs/)" ]; then
+        # Check for any changes (tracked or untracked) in the docs directory, excluding manifest
+        CHANGES=$(git status --porcelain plugins/claude-code-docs/skills/claude-code/docs/ | grep -v 'docs_manifest.json' || true)
+        if [ -n "$CHANGES" ]; then
           echo "changed=true" >> $GITHUB_OUTPUT
           echo "Changes detected:"
-          git status --porcelain plugins/claude-code-docs/skills/claude-code/docs/
+          echo "$CHANGES"
         else
-          echo "No changes detected"
+          echo "No changes detected (manifest-only changes are ignored)"
         fi
 
     - name: Generate commit message
@@ -71,7 +72,7 @@ jobs:
 
         echo "message=$COMMIT_MSG" >> $GITHUB_OUTPUT
 
-    - name: Bump minor version
+    - name: Bump patch version
       if: steps.verify-changed-files.outputs.changed == 'true'
       id: bump-version
       run: |
@@ -83,9 +84,9 @@ jobs:
         MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
         PATCH=$(echo "$CURRENT_VERSION" | cut -d. -f3)
 
-        # Increment minor version, reset patch to 0
-        NEW_MINOR=$((MINOR + 1))
-        NEW_VERSION="$MAJOR.$NEW_MINOR.0"
+        # Increment patch version for doc updates
+        NEW_PATCH=$((PATCH + 1))
+        NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
 
         # Update plugin.json
         jq --arg v "$NEW_VERSION" '.version = $v' "$PLUGIN_FILE" > tmp.json && mv tmp.json "$PLUGIN_FILE"
