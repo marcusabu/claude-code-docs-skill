@@ -41,14 +41,32 @@ jobs:
           echo "No changes detected (manifest-only changes are ignored)"
         fi
 
+    - name: Setup Node.js
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Update SKILL.md with Claude Code
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        npm install -g @anthropic-ai/claude-code
+
+        claude --print --yes \
+          --allowedTools "Read,Glob,Edit" \
+          -p "Scan plugins/claude-code-docs/skills/claude-code/docs/ and update the 'Documentation Reference' section in plugins/claude-code-docs/skills/claude-code/SKILL.md to match the actual files. Preserve the existing category structure, add new files to appropriate sections, and remove references to deleted files. Keep all other sections unchanged."
+
     - name: Generate commit message
       if: steps.verify-changed-files.outputs.changed == 'true'
       id: commit-msg
       run: |
         DOCS_DIR="plugins/claude-code-docs/skills/claude-code/docs"
+        SKILL_FILE="plugins/claude-code-docs/skills/claude-code/SKILL.md"
 
         # Stage changes to see what will be committed
-        git add -A "$DOCS_DIR"
+        git add -A "$DOCS_DIR" "$SKILL_FILE"
 
         # Get list of changed files
         CHANGED_FILES=$(git diff --name-status --cached | grep "^M" | cut -f2 | grep -E "\.md$" | xargs -I {} basename {} 2>/dev/null | paste -sd ", " -)
