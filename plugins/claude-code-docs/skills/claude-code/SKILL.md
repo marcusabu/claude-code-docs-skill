@@ -26,6 +26,8 @@ The `docs/` folder contains official Claude Code documentation:
 - [Overview](docs/overview.md) - Introduction to Claude Code
 - [Quickstart](docs/quickstart.md) - Get up and running quickly
 - [Setup](docs/setup.md) - Installation and initial setup
+- [Features Overview](docs/features-overview.md) - Feature summary and capabilities
+- [How Claude Code Works](docs/how-claude-code-works.md) - Architecture and internals
 
 **Core Configuration:**
 - [Settings](docs/settings.md) - All settings options, permissions, environment variables
@@ -42,7 +44,6 @@ The `docs/` folder contains official Claude Code documentation:
 **Commands & Interface:**
 - [CLI Reference](docs/cli-reference.md) - Command line options
 - [Interactive Mode](docs/interactive-mode.md) - Interactive session usage
-- [Slash Commands](docs/slash-commands.md) - Built-in and custom commands
 - [Output Styles](docs/output-styles.md) - Customizing Claude's output
 - [Statusline](docs/statusline.md) - Status line configuration
 
@@ -92,5 +93,6 @@ The `docs/` folder contains official Claude Code documentation:
 - [Analytics](docs/analytics.md) - Analytics and telemetry
 
 **Reference:**
+- [Best Practices](docs/best-practices.md) - Recommended patterns and practices
 - [Troubleshooting](docs/troubleshooting.md) - Common issues and fixes
 - [Changelog](docs/changelog.md) - Version history and updates
